@@ -17,7 +17,8 @@ app.get('/', function(request, response) {
 });
 
 app.post('/test',function(request,response){
-res.end("yes");
+	response.send(request.body);
+//res.end("yes");
 });
 
 app.listen(app.get('port'), function() {
