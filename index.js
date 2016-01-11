@@ -1,5 +1,6 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var request = require('request');
 var app = express();
 
 app.set('port', (process.env.PORT || 5000));
@@ -17,8 +18,16 @@ app.get('/', function(request, response) {
 });
 
 app.post('/test',function(request,response){
-	response.send(request.body);
-//res.end("yes");
+	request.post('https://ql.hipchat.com/v2/room/2317660/notification?auth_token=paDzoz5VeFjCntDjsII3C0Hpt6YDxQ2D9tSV5mfh',
+		{ json: {"color":"green","message":"My first notification (yey)","notify":false,"message_format":"text"} },
+		function (error, response, body) {
+			if (!error && response.statusCode == 200) {
+				console.log(body)
+			}
+		}
+	);
+	//response.send(request.body);
+	//res.end("yes");
 });
 
 app.listen(app.get('port'), function() {
