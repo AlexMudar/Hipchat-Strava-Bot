@@ -18,14 +18,11 @@ app.get('/', function(request, response) {
 });
 
 app.post('/test',function(request,response){
-	request.post('https://ql.hipchat.com/v2/room/2317660/notification?auth_token=paDzoz5VeFjCntDjsII3C0Hpt6YDxQ2D9tSV5mfh',
-		{ json: {"color":"green","message":"My first notification (yey)","notify":false,"message_format":"text"} },
-		function (error, response, body) {
-			if (!error && response.statusCode == 200) {
-				console.log(body)
-			}
-		}
-	);
+ response.writeHead(200, {"Content-Type": "application/json"});
+ var json = JSON.stringify({"color":"green","message":"My first notification (yey)","notify":false,"message_format":"text"});
+ response.end(json);
+
+	//request.post('https://ql.hipchat.com/v2/room/2317660/notification?auth_token=paDzoz5VeFjCntDjsII3C0Hpt6YDxQ2D9tSV5mfh',
 	//response.send(request.body);
 	//res.end("yes");
 });
