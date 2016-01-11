@@ -19,7 +19,7 @@ app.get('/', function(request, response) {
 
 app.post('/test',function(request,response){
 	response.writeHead(200, {"Content-Type": "application/json"});
-	var json = JSON.stringify({"color":"green","message":req.body["item"]["message"]["message"],"notify":false,"message_format":"text"});
+	var json = JSON.stringify({"color":"green","message":request.body["item"]["message"]["message"],"notify":false,"message_format":"text"});
 	response.end(json);
 });
 
