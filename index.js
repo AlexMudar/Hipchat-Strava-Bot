@@ -27,7 +27,7 @@ app.post('/strava',function(request,response){
 	var options = {
 		url: 'https://www.strava.com/api/v3/clubs/150858/activities',
 		headers: {
-			'Authorization': 'Bearer ' + process.env.StravaToken
+			'Authorization': 'Bearer 121212'
 		}
 	};
 	
