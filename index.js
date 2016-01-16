@@ -23,6 +23,12 @@ app.post('/test',function(request,response){
 	response.end(json);
 });
 
+app.post('/strava',function(request,response){
+	response.writeHead(200, {"Content-Type": "application/json"});
+	var json = JSON.stringify({"color":"green","message":"Yep","notify":false,"message_format":"text"});
+	response.end(json);
+});
+
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
