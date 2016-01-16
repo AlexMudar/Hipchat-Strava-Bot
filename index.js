@@ -24,8 +24,24 @@ app.post('/test',function(request,response){
 });
 
 app.post('/strava',function(request,response){
+	var options = {
+		url: 'https://www.strava.com/api/v3/clubs/150858/activities',
+		headers: {
+			'Authorization': 'Bearer ' + process.env.StravaToken
+		}
+	};
+	
+	var stravaResponse;
+	request(options, function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+			stravaResponse = "Success"; 
+		} else {
+			stravaResponse = "Error";
+		}
+	})
+	
 	response.writeHead(200, {"Content-Type": "application/json"});
-	var json = JSON.stringify({"color":"green","message":"Yep","notify":false,"message_format":"text"});
+	var json = JSON.stringify({"color":"green","message":stravaResponse,"notify":false,"message_format":"text"});
 	response.end(json);
 });
 
