@@ -23,11 +23,22 @@ app.get('/', function(request, response) {
 	response.end(json);
 });
 
-app.post('/strava',function(request,response){
+app.post('/strava', function(request, response){
+	stravaScoreboard(request, response, 150858, process.env.hipChatCyclingTest);
+});
 
+app.post('/running', function(request, response){
+	stravaScoreboard(request, response, 119396, process.env.hipChatRunning);
+});
+
+app.post('/cycling', function(request, response){
+	stravaScoreboard(request, response, 150858, process.env.hipChatCycling);
+});
+
+function stravaScoreboard(request, response, stravaClub, hipChatPostURL){
 	var request = require('request');
 	var options = {
-		url: 'https://www.strava.com/api/v3/clubs/150858/activities',
+		url: 'https://www.strava.com/api/v3/clubs/' + stravaClub + '/activities', 	
 		headers: {
 			'Authorization': 'Bearer ' + process.env.StravaToken
 		}
@@ -47,10 +58,6 @@ app.post('/strava',function(request,response){
 				if (tempDate > oneWeekAgo){
 					var distanceInMiles = ((bodyJson[a]["distance"])/1609.3); //.toFixed(1);
 					var athleteID = bodyJson[a]["athlete"]["id"].toString();
-					//if (!athleteRanking[athleteID]){
-					//	athleteRanking[athleteID] = 0;
-					//}
-					//athleteRanking[athleteID] = athleteRanking[athleteID] + distanceInMiles;
 					for (b=0; b<athleteRanking.length; b++ ){
 						if (athleteRanking[b].id === athleteID){
 							athleteRanking[b].distanceInMiles = athleteRanking[b].distanceInMiles + distanceInMiles;
@@ -58,60 +65,32 @@ app.post('/strava',function(request,response){
 						} 
 					}
 					if (athleteID != 0){
-						console.log("pushing: ", athleteID);
-						switch (parseInt(athleteID)) {
-							case 6985116:
-								var name = "Alex";
-								break;
-							case 6882962:
-								var name = "Tim";
-								break;
-							case 380249:
-								var name = "Hans";
-								break;
-							case 415235:
-								var name = "Michael";
-								break;
-							case 7016430:
-								var name = "Julie";
-								break;
-							case 664571:
-								var name = "Matt";
-								break;
-							case 895931:
-								var name = "Amber";
-								break;
-							default:
-								var name = athleteID;
-						}
+						var name = athleteidToName(parseInt(athleteID));
 						athleteRanking.push( {id: athleteID, distanceInMiles: distanceInMiles, name: name});
 					}
-					//stravaResponse = stravaResponse + "\r" + athleteID + ": " + (distanceInMiles).toString(); 
 				}
 			}
 			for (c = 0; c<athleteRanking.length; c++){
-				console.log("we're on item ", c);
 				stravaResponse = stravaResponse + (athleteRanking[c].name).toString() + ": " + ((athleteRanking[c].distanceInMiles).toFixed(1)).toString() + "mi \r"; 
 			}
 			
 			var request = require('request');
 			var options = {
-				uri: 'https://ql.hipchat.com/v2/room/2317660/notification?auth_token=' + process.env.hipChatToken,
+				uri: hipChatPostURL,
 				method: 'POST',
 				json: {
-					"color":"green",
+					"color":"gray",
 					"message":stravaResponse,
 					"notify":false,
 					"message_format":"text"
 				}
 			};
-
 			request(options, function (error, response, body) {
 				if (!error && response.statusCode == 204) {
-					console.log("Success"); // Print the shortened url.
+					console.log("Successfuly posted to Hipchat, received a 204 back.");
 				} else {
 					console.log("Failed to post to HipChat. Post response HTTP status code is: ", response.statusCode);
-					console.log("Hipchat message was: ", JSON.stringify(stravaResponse));
+					console.log("Message to be posted was: ", JSON.stringify(stravaResponse));
 				}
 			});
 			
@@ -123,8 +102,40 @@ app.post('/strava',function(request,response){
 	});
 	response.writeHead(200);
 	response.end();
-});
+}
 
+function athleteidToName(athleteid){
+	switch (athleteid) {
+		case 6985116:
+			var name = "Alex";
+			break;
+		case 6882962:
+			var name = "Tim";
+			break;
+		case 380249:
+			var name = "Hans";
+			break;
+		case 415235:
+			var name = "Michael";
+			break;
+		case 7016430:
+			var name = "Julie";
+			break;
+		case 664571:
+			var name = "Matt";
+			break;
+		case 895931:
+			var name = "Amber";
+			break;
+		case 7434813:
+			var name = "Russ";
+			break;
+		default:
+			var name = athleteid;
+	}
+return name;
+}
+	
 app.listen(app.get('port'), function() {
 	console.log('Node app is running on port', app.get('port'));
 });
