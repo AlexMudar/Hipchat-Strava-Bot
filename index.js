@@ -28,7 +28,7 @@ app.post('/strava', function(request, response){
 });
 
 app.post('/running', function(request, response){
-	stravaScoreboard(request, response, 119396, process.env.hipChatRunning);
+	stravaScoreboard(request, response, 178970, process.env.hipChatRunning);
 });
 
 app.post('/cycling', function(request, response){
