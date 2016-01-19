@@ -130,6 +130,15 @@ function athleteidToName(athleteid){
 		case 7434813:
 			var name = "Russ";
 			break;
+		case 1707201:
+			var name = "David";
+			break;
+		case 13025325:
+			var name = "Matthew";
+			break;		
+		case 8502130:
+			var name = "Bryan";
+			break;				
 		default:
 			var name = athleteid;
 	}
