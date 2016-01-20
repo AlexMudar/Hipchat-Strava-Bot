@@ -65,7 +65,7 @@ function stravaScoreboard(request, response, stravaClub, hipChatPostURL){
 						} 
 					}
 					if (athleteID != 0){
-						var name = athleteidToName(parseInt(athleteID));
+						var name = bodyJson[a]["athlete"]["firstname"].toString();
 						athleteRanking.push( {id: athleteID, distanceInMiles: distanceInMiles, name: name});
 					}
 				}
@@ -102,47 +102,6 @@ function stravaScoreboard(request, response, stravaClub, hipChatPostURL){
 	});
 	response.writeHead(200);
 	response.end();
-}
-
-function athleteidToName(athleteid){
-	switch (athleteid) {
-		case 6985116:
-			var name = "Alex";
-			break;
-		case 6882962:
-			var name = "Tim";
-			break;
-		case 380249:
-			var name = "Hans";
-			break;
-		case 415235:
-			var name = "Michael";
-			break;
-		case 7016430:
-			var name = "Julie";
-			break;
-		case 664571:
-			var name = "Matt";
-			break;
-		case 895931:
-			var name = "Amber";
-			break;
-		case 7434813:
-			var name = "Russ";
-			break;
-		case 1707201:
-			var name = "David";
-			break;
-		case 13025325:
-			var name = "Matthew";
-			break;		
-		case 8502130:
-			var name = "Bryan";
-			break;				
-		default:
-			var name = athleteid;
-	}
-return name;
 }
 	
 app.listen(app.get('port'), function() {
