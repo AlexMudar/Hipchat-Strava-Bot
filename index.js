@@ -51,6 +51,7 @@ function stravaScoreboard(request, response, stravaClub, hipChatPostURL){
 			var athleteRanking = []; 
 			var stravaResponse = "";
 			var oneWeekAgo = new Date();
+			var teamTotal = 0;
 			oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 			
 			for (a=0; a<bodyJson.length; a++){
@@ -72,7 +73,10 @@ function stravaScoreboard(request, response, stravaClub, hipChatPostURL){
 			}
 			for (c = 0; c<athleteRanking.length; c++){
 				stravaResponse = stravaResponse + (athleteRanking[c].name).toString() + ": " + ((athleteRanking[c].distanceInMiles).toFixed(1)).toString() + "mi \r"; 
+				teamTotal = teamTotal + athleteRanking[c].distanceInMiles;
 			}
+			
+			stravaResponse = stravaResponse + "Team Total: " + teamTotal.toFixed(1) + "mi \r";
 			
 			var request = require('request');
 			var options = {
