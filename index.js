@@ -63,11 +63,11 @@ function stravaScoreboard(request, response, stravaClub, hipChatPostURL){
 				}
 			}
 			for (c = 0; c<athleteRanking.length; c++){
-				stravaResponse = stravaResponse + (athleteRanking[c].name).toString() + ": " + ((athleteRanking[c].distanceInMiles).toFixed(1)).toString() + "mi \r"; 
+				stravaResponse = stravaResponse + "<a href='https://www.strava.com/athletes/" + (athleteRanking[c].id).toString() + "'>" + (athleteRanking[c].name).toString() + "</a>" + ": " + ((athleteRanking[c].distanceInMiles).toFixed(1)).toString() + "mi <br>"; 
 				teamTotal = teamTotal + athleteRanking[c].distanceInMiles;
 			}
 			
-			stravaResponse = stravaResponse + "Team Total: " + teamTotal.toFixed(1) + "mi \r";
+			stravaResponse = stravaResponse + "<a href='https://www.strava.com/clubs/" + stravaClub + "'>Club Total</a>: " + teamTotal.toFixed(1) + "mi \r";
 			
 			var request = require('request');
 			var options = {
@@ -77,7 +77,7 @@ function stravaScoreboard(request, response, stravaClub, hipChatPostURL){
 					"color":"gray",
 					"message":stravaResponse,
 					"notify":false,
-					"message_format":"text"
+					"message_format":"html"
 				}
 			};
 			request(options, function (error, response, body) {
