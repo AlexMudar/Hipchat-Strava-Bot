@@ -15,7 +15,7 @@ app.get('/', function(request, response) {
 });
 
 app.post('/strava', function(request, response){
-	stravaScoreboard(request, response, 150858, process.env.hipChatCyclingTest);
+	stravaScoreboard(request, response, 178970, process.env.hipChatCyclingTest);
 });
 
 app.post('/running', function(request, response){
@@ -29,7 +29,7 @@ app.post('/cycling', function(request, response){
 function stravaScoreboard(request, response, stravaClub, hipChatPostURL){
 	var request = require('request');
 	var options = {
-		url: 'https://www.strava.com/api/v3/clubs/' + stravaClub + '/activities', 	
+		url: 'https://www.strava.com/api/v3/clubs/' + stravaClub + '/activities?per_page=200', 	
 		headers: {
 			'Authorization': 'Bearer ' + process.env.StravaToken
 		}
