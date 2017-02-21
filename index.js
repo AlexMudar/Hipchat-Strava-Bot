@@ -58,12 +58,24 @@ function stravaScoreboard(request, response, stravaClub, hipChatPostURL){
 					}
 					if (athleteID != 0){
 						var name = bodyJson[a]["athlete"]["firstname"].toString();
-						athleteRanking.push( {id: athleteID, distanceInMiles: distanceInMiles, name: name});
+                        var profile = bodyJson[a]["athlete"]["profile_medium"].toString();
+						athleteRanking.push( {id: athleteID, distanceInMiles: distanceInMiles, name: name, profile: profile});
 					}
 				}
 			}
-			for (c = 0; c<athleteRanking.length; c++){
-				stravaResponse = stravaResponse + "<a href='https://www.strava.com/athletes/" + (athleteRanking[c].id).toString() + "'>" + (athleteRanking[c].name).toString() + "</a>" + ": " + ((athleteRanking[c].distanceInMiles).toFixed(1)).toString() + "mi <br>"; 
+            
+            athleteRanking.sort(function(a,b){
+                if (parseFloat(a.distanceInMiles) < parseFloat(b.distanceInMiles))
+                    return -1;
+                if (parseFloat(a.distanceInMiles) > parseFloat(b.distanceInMiles))
+                    return 1;
+                return 0;
+            });
+            
+            for (c = 0; c<athleteRanking.length; c++){
+			    if (c == 0)
+                    stravaResponse = stravaResponse + "<img src='" + (athleteRanking[0].profile).toString() + "' alt='' width='42' heigh='42'>";
+                stravaResponse = stravaResponse + "<a href='https://www.strava.com/athletes/" + (athleteRanking[c].id).toString() + "'>" + (athleteRanking[c].name).toString() + "</a>" + ": " + ((athleteRanking[c].distanceInMiles).toFixed(1)).toString() + "mi <br>"; 
 				teamTotal = teamTotal + athleteRanking[c].distanceInMiles;
 			}
 			
